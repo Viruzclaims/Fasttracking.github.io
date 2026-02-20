@@ -1,10 +1,10 @@
-TRACKING 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-time item tracker • B3xVFg42</title>
-    <!-- Leaflet CSS (for map) -->
+    <title>Real-time tracker • B3xVFg42 • Lagos → Florida</title>
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
@@ -14,7 +14,7 @@ TRACKING
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
         body {
-            background: #0b1a2f;
+            background: #0b2a1f; /* deep green hint for Africa */
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -26,19 +26,19 @@ TRACKING
             width: 100%;
             background: white;
             border-radius: 36px 36px 24px 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px #2a4b7c inset;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px #d4a11e inset;
             overflow: hidden;
             transition: all 0.2s;
         }
         .header {
-            background: linear-gradient(145deg, #002856, #0a3b6e);
+            background: linear-gradient(145deg, #8b5a2b, #b87c3a); /* earthy tones */
             color: white;
             padding: 24px 28px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid #7ab7e0;
+            border-bottom: 3px solid #f5c842;
         }
         .header h1 {
             font-weight: 500;
@@ -50,7 +50,7 @@ TRACKING
         }
         .header h1 span {
             background: #f5c842;
-            color: #002856;
+            color: #5e3a1a;
             font-weight: 700;
             padding: 6px 18px;
             border-radius: 40px;
@@ -58,28 +58,28 @@ TRACKING
             box-shadow: 0 4px 0 #a07d2b;
         }
         .tracking-badge {
-            background: #163a5e;
+            background: #3b6e5e;
             padding: 12px 24px;
             border-radius: 60px;
             font-size: 1.5rem;
             font-weight: 600;
-            border: 2px solid #8fc9ff;
-            box-shadow: 0 0 0 2px #0e2d49;
+            border: 2px solid #f5c842;
+            box-shadow: 0 0 0 2px #1f4a3b;
             font-family: monospace;
             letter-spacing: 2px;
         }
         .status-bar {
-            background: #e4f0fa;
+            background: #fff6e5;
             padding: 20px 28px;
             display: flex;
             flex-wrap: wrap;
             align-items: baseline;
             gap: 24px;
-            border-bottom: 1px solid #b9d6f0;
-            color: #003366;
+            border-bottom: 1px solid #e0cba0;
+            color: #3b2e1e;
         }
         .status-badge {
-            background: #2e7d32;
+            background: #b86b2c;
             color: white;
             font-weight: 600;
             padding: 10px 26px;
@@ -88,35 +88,35 @@ TRACKING
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 5px 0 #1b4f1b;
+            box-shadow: 0 5px 0 #6e3f18;
         }
         .status-badge::before {
-            content: "⛟";
+            content: "⛴️";  /* shipping / awaiting departure */
             font-size: 1.7rem;
-            filter: drop-shadow(2px 2px 0 #1f3f1f);
+            filter: drop-shadow(2px 2px 0 #3f3f1f);
         }
-        .address {
+        .destination {
             background: white;
             padding: 12px 20px;
             border-radius: 60px;
             border-left: 6px solid #f5b342;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 500;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             word-break: break-word;
             flex: 1;
             min-width: 260px;
         }
-        .address strong {
-            color: #003b77;
+        .destination strong {
+            color: #8b4c1a;
         }
         .live-indicator {
             margin-left: auto;
             display: flex;
             align-items: center;
             gap: 6px;
-            background: #1a2c42;
-            color: #b7e0ff;
+            background: #1a4235;
+            color: #e0ffcc;
             padding: 8px 16px;
             border-radius: 40px;
             font-size: 1.1rem;
@@ -153,14 +153,14 @@ TRACKING
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            border-top: 2px solid #b9d3f0;
+            border-top: 2px solid #e0ba7c;
             font-size: 1.15rem;
         }
         .timestamp {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #00355e;
+            color: #3b2e1e;
         }
         .timestamp .time-value {
             font-family: monospace;
@@ -172,7 +172,7 @@ TRACKING
             letter-spacing: 1px;
         }
         .refresh-note {
-            color: #0e4a6b;
+            color: #1d6540;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -181,13 +181,13 @@ TRACKING
             font-size: 1.4rem;
         }
         .footer-note {
-            color: #1d4560;
+            color: #5e3a1a;
             font-weight: 500;
-            border-left: 2px solid #789fcb;
+            border-left: 2px solid #b87c3a;
             padding-left: 18px;
         }
         .footer-note strong {
-            color: #022d52;
+            color: #024e2e;
             background: #deedff;
             padding: 4px 12px;
             border-radius: 30px;
@@ -200,7 +200,7 @@ TRACKING
 <div class="tracker-card">
     <div class="header">
         <h1>
-            📦 TRACK & TRACE
+            📦 LAGOS → FLORIDA
             <span>READY TO SHIP</span>
         </h1>
         <div class="tracking-badge">
@@ -209,16 +209,16 @@ TRACKING
     </div>
 
     <div class="status-bar">
-        <div class="status-badge">READY FOR DISPATCH</div>
-        <div class="address">
-            <strong>📍 Current location:</strong> 1575 A1A St. Augustine, Florida 32177
+        <div class="status-badge">IN LAGOS · READY FOR DISPATCH</div>
+        <div class="destination">
+            <strong>🚚 SHIPPING TO:</strong> 1575 A1A St. Augustine, Florida 32177
         </div>
         <div class="live-indicator">
-            <span class="pulse"></span> LIVE · updating
+            <span class="pulse"></span> LIVE · item in Lagos
         </div>
     </div>
 
-    <!-- Map container -->
+    <!-- Map container showing current location in Lagos, Nigeria -->
     <div class="map-container">
         <div id="tracker-map"></div>
     </div>
@@ -232,7 +232,7 @@ TRACKING
             <i>🔄</i> real-time sync (simulated)
         </div>
         <div class="footer-note">
-            🚚 item status: <strong>at warehouse · ready to ship</strong>
+            📍 current: <strong>Lagos, Nigeria · awaiting departure</strong>
         </div>
     </div>
 </div>
@@ -241,123 +241,110 @@ TRACKING
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
     (function() {
-        // ----- Coordinates for 1575 A1A, St. Augustine, FL 32177 -----
-        // Precise geocoding: (lat, lng) approx based on A1A / St. Augustine beach area.
-        // This location represents the shipping warehouse / current item position.
-        const targetLat = 29.9013;    // ~ near A1A and Pope Rd
-        const targetLng = -81.3120;   // adjusted for St. Augustine mainland / coastal region
-        
-        // Initialize map, set zoom for street precision
-        const map = L.map('tracker-map').setView([targetLat, targetLng], 16);
-        
-        // Use CartoDB Voyager (no API key, free & clean) — or OpenStreetMap standard
+        // ----- Coordinates for current location: LAGOS, NIGERIA (warehouse area) -----
+        // Approx coordinates for Lagos (Apapa port / industrial area)
+        const lagosLat = 6.4531;    // Apapa / Lagos port area
+        const lagosLng = 3.3958;    // close to container terminals
+
+        // Destination (client address) – not shown on map but referenced in popup & UI
+        const destinationAddr = "1575 A1A St. Augustine, Florida 32177";
+
+        // Initialize map centered on Lagos
+        const map = L.map('tracker-map').setView([lagosLat, lagosLng], 14);
+
+        // Use CartoDB Voyager (free, clear)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB',
             subdomains: 'abcd',
             maxZoom: 19,
-            minZoom: 12
+            minZoom: 10
         }).addTo(map);
-        
-        // Custom icon for package (to make it pop)
+
+        // Custom icon for package (highlight current location)
         const packageIcon = L.divIcon({
             html: '📦',
             className: 'package-marker',
             iconSize: [40, 40],
             popupAnchor: [0, -20]
         });
-        
-        // Marker with the package location (real-time position)
-        const marker = L.marker([targetLat, targetLng], { 
+
+        // Marker at Lagos location
+        const marker = L.marker([lagosLat, lagosLng], { 
             icon: packageIcon,
             riseOnHover: true,
             zIndexOffset: 1000
         }).addTo(map);
-        
-        // Bind a detailed popup (shows tracking and address)
+
+        // Popup with details: current location, tracking, destination
         marker.bindPopup(`
-            <div style="text-align: center; font-weight:500; min-width:200px;">
-                <div style="font-size:1.7rem; margin-bottom:6px;">📍 YOUR ITEM</div>
-                <div style="background:#002856; color:white; padding:6px 12px; border-radius:40px; margin:6px 0;">
+            <div style="text-align: center; font-weight:500; min-width:240px;">
+                <div style="font-size:1.7rem; margin-bottom:6px;">📍 CURRENT POSITION</div>
+                <div style="background:#8b5a2b; color:white; padding:6px 12px; border-radius:40px; margin:6px 0;">
                     🔑 B3xVFg42
                 </div>
                 <div style="border-top:1px solid #aaa; margin:8px 0 4px; padding-top:6px;">
-                    1575 A1A<br>St. Augustine, FL 32177
+                    <strong>LAGOS WAREHOUSE</strong><br>
+                    Apapa Port, Lagos, Nigeria
                 </div>
-                <div style="color:#2e7d32; font-weight:600; margin-top:8px;">✅ READY TO SHIP OUT</div>
-                <div style="font-size:0.9rem; color:#3f5f7f;">⏱️ real-time position active</div>
+                <div style="color:#b86b2c; font-weight:600; margin:8px 0 4px;">
+                    ⏳ READY TO SHIP TO:
+                </div>
+                <div style="background:#fff0d4; padding:6px; border-radius:16px;">
+                    ${destinationAddr}
+                </div>
+                <div style="font-size:0.9rem; color:#3f5f7f; margin-top:8px;">⏱️ live tracking active</div>
             </div>
         `);
-        
-        // Open popup automatically (to show details)
+
+        // Open popup automatically
         marker.openPopup();
-        
-        // Add a pulsing circle to emphasize location (semi-transparent)
-        const circle = L.circle([targetLat, targetLng], {
-            color: '#ffab00',
+
+        // Add a pulsing circle to emphasize location
+        const circle = L.circle([lagosLat, lagosLng], {
+            color: '#b87c3a',
             weight: 3,
-            fillColor: '#ffd966',
+            fillColor: '#f5c842',
             fillOpacity: 0.3,
-            radius: 25
+            radius: 40
         }).addTo(map);
-        
-        // ---- simulate "real‑time" timestamp updates (freshness indicator) ----
+
+        // ---- live timestamp update every second ----
         const timeElement = document.getElementById('live-timestamp');
-        
         function updateTimestamp() {
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
-            const timeStr = `${hours}:${minutes}:${seconds}`;
-            
-            // Optionally add seconds to feel more real-time
-            timeElement.textContent = `${timeStr} ET`;
-            
-            // Also subtly change the marker popup content? Not needed, but could refresh.
-            // We can update the popup content's timestamp if we want — but it's fine.
+            const timeStr = `${hours}:${minutes}:${seconds} WAT`; // West Africa Time
+            timeElement.textContent = timeStr;
         }
-        
-        // initial call
         updateTimestamp();
-        
-        // Update every second to show "live" feel (though location fixed, the timestamp shows constant updates)
         setInterval(updateTimestamp, 1000);
-        
-        // Optional: slight map rotate or marker bounce? Not necessary. But we can add a small 
-        // "refreshing location" effect by toggling circle radius? That might be overkill.
-        // To reinforce the idea that it's being tracked live, we can add a periodic "pulse" on the marker.
-        let pulseTimer = 0;
+
+        // Periodic pulse effect on circle
         setInterval(() => {
-            // briefly increase circle radius to simulate a 'ping'
-            circle.setStyle({ radius: 32, fillOpacity: 0.5 });
+            circle.setStyle({ radius: 48, fillOpacity: 0.5 });
             setTimeout(() => {
-                circle.setStyle({ radius: 25, fillOpacity: 0.3 });
+                circle.setStyle({ radius: 40, fillOpacity: 0.3 });
             }, 300);
         }, 4000);
-        
-        // Also re-center the map if user scrolls away? Not necessary, user can pan.
-        // But we can optionally have a button to reset view – not needed for this demo.
-        
-        // Add a small "live" note as an attribution on map corner (optional)
+
+        // Add a small control to show current status on map
         const liveControl = L.control({ position: 'bottomleft' });
         liveControl.onAdd = function(map) {
             const div = L.DomUtil.create('div', 'info leaflet-control');
-            div.innerHTML = '<span style="background: #002856; color: #ffd966; padding: 6px 12px; border-radius: 24px; font-weight: 600; border:2px solid #ffb347;">⚡ LIVE TRACKING: B3xVFg42</span>';
+            div.innerHTML = '<span style="background: #3b6e5e; color: #f5e3c0; padding: 6px 14px; border-radius: 30px; font-weight: 600; border:2px solid #f5c842;">⚡ B3xVFg42 · LAGOS</span>';
             div.style.padding = '5px';
             return div;
         };
         liveControl.addTo(map);
-        
-        // For better UX, add a small line showing that the item is at this exact facility
-        const addressLine = "1575 A1A, St. Augustine, FL 32177";
-        // done.
     })();
 </script>
 
-<!-- Add a little style for the custom marker (since divIcon might need some baseline) -->
+<!-- Styles for custom marker and responsiveness -->
 <style>
     .package-marker {
-        font-size: 2.8rem;
+        font-size: 3rem;
         line-height: 1;
         text-align: center;
         filter: drop-shadow(4px 8px 6px #1a3350);
@@ -377,14 +364,12 @@ TRACKING
     .leaflet-popup-tip {
         background: #f5b342;
     }
-    /* Responsive adjustments */
     @media (max-width: 720px) {
         .header h1 { font-size: 1.4rem; }
         .tracking-badge { font-size: 1.1rem; padding: 8px 16px; }
         .status-badge { font-size: 1.1rem; }
-        .address { font-size: 1rem; }
+        .destination { font-size: 1rem; }
     }
 </style>
-
 </body>
 </html>
